@@ -26,6 +26,4 @@ Tag.init(
   }
 );
 
-Tag.belongsToMany(Product, {through: 'ProductTag'});
-
 module.exports = Tag;

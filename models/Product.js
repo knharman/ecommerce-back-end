@@ -7,7 +7,7 @@ const Category = require('./Category');
 const Tag = require('./Tag');
 
 // Initialize Product model (table) by extending off Sequelize's Model class
-class Product extends Model {}
+class Product extends Model { }
 
 // set up fields and rules for Product model
 Product.init(
@@ -21,25 +21,29 @@ Product.init(
     product_name: {
       type: DataTypes.STRING,
       allowNull: false
-    }, 
-    price: {
-      type: DataTypes.DECIMAL, 
-      allowNull: false, 
-      validate: isNumeric
-    }, 
-    stock: {
-      type: DataTypes.INTEGER, 
-      allowNull: false, 
-      defaultValue: 10,
-      validate: isNumeric, 
     },
-    category_id: {
-      types: DataTypes.INTEGER, 
-      references: {
-        model: Category,
-        key: 'id'
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        isNumeric: true
+      },
+      stock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 10,
+        validate: {
+          isNumeric: true
+        },
+      },
+      category_id: {
+        types: DataTypes.INTEGER,
+        references: {
+          model: Category,
+          key: 'id'
+        }
       }
-    }
+    },
   },
   {
     sequelize,
@@ -49,9 +53,5 @@ Product.init(
     modelName: 'product',
   }
 );
-
-Product.belongsTo(Category, {foreignKey: 'category_id'});
-
-Product.belongsToMany(Tag, {through: 'ProductTag'});
 
 module.exports = Product;
